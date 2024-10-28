@@ -6,7 +6,7 @@ export const addUser = async (data) => {
 
     try {
         const [confirm] = await pool.query( //pool.query : DB에 쿼리를 보내고 결과 반환
-            'SELECT EXISTS(SELECT 1 FROM user WHERE WMAIL=?) AS isExistEmail',
+            'SELECT EXISTS(SELECT 1 FROM user WHERE EMAIL=?) AS isExistEmail', //여기 수정해놓기 
             // 있는지 없는지만 확인하는거라 *대신 임의의 값 1을 넣은거임 
             data.email
         )
