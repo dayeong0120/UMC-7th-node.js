@@ -13,7 +13,7 @@ export const addUserMission = async (data) => {
             [data.userId, data.missionId]
         )
 
-        if (!check.length) {
+        if (check.length) {
             console.log('이미 진행중인 미션입니다')
             return null
         }
