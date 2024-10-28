@@ -3,6 +3,7 @@ import express from "express"
 import cors from "cors"
 import { handleUserSignUp } from "./controllers/user.controller.js"
 import { handleAddReview } from "./controllers/review.controller.js"
+import { handleAddProgressMission } from "./controllers/userMission.controller.js"
 
 dotenv.config()
 
@@ -22,7 +23,7 @@ app.post("/users", handleUserSignUp)
 
 app.post('/mission/:missionId/reviews', handleAddReview)
 
-
+app.post('/users/:userId/missions', handleAddProgressMission)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
