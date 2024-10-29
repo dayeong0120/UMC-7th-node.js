@@ -4,6 +4,8 @@ import cors from "cors"
 import { handleUserSignUp } from "./controllers/user.controller.js"
 import { handleAddReview } from "./controllers/review.controller.js"
 import { handleAddProgressMission } from "./controllers/userMission.controller.js"
+import { handleAddMission } from "./controllers/mission.controller.js"
+
 
 dotenv.config()
 
@@ -24,6 +26,8 @@ app.post("/users", handleUserSignUp)
 app.post('/mission/:missionId/reviews', handleAddReview)
 
 app.post('/users/:userId/missions', handleAddProgressMission)
+
+app.post("/restaurants/:restaurantId/missions", handleAddMission)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
