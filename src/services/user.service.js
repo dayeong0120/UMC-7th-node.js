@@ -21,7 +21,7 @@ export const userSignUp = async (data) => { //이 data가 bodyToUser
         throw new Error("이미 존재하는 이메일입니다")
     }
 
-    for (const preference of data.preference) {
+    for (const preference of data.preferences) {
         await setPreference(joinUserId, preference)
         //유저와 선호카테고리 중간테이블을 추가하는 repository 로직
     }

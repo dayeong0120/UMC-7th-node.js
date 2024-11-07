@@ -1,12 +1,13 @@
 export const bodyToUser = (body) => {
     const birth = new Date(body.dateOfBirth);
     // date로 파싱(형태 바꾸기?)해서 변환 
+    const gender = (body.gender == 0) ? false : true
 
     return {
         email: body.email,
         name: body.name,
         nickname: body.nickname,
-        gender: body.gender,
+        gender: gender,
         birth,
         address: body.address || "",
         phoneNumber: body.phoneNumber,
@@ -15,22 +16,19 @@ export const bodyToUser = (body) => {
 }
 
 export const responseFromUser = ({ user, preferences }) => {
-    let prefercategory = []
-    preferences.forEach(preference => {
-        preferCategory.push(preference.name)
-    });
-    //preferences는 조회된 user-prefer 객체들을 요소로 가진 배열
-    //각각의 객체에서 name값만 빼서 새로운 배열 만들었어요 
+    const preferFoods = preferences.map(
+        (preference) => preference.category.name
+    )
 
     return {
-        email: user[0].email,
-        name: user[0].name,
-        nickname: user[0].nickname,
-        gender: user[0].gender,
-        dateOfBirth: user[0].date_of_birth,
-        address: user[0].address || "",
-        phoneNumber: user[0].phone_number,
-        preferCategoryNames: prefercategory
+        email: user.email,
+        name: user.name,
+        nickname: user.nickname,
+        gender: user.gender,
+        dateOfBirth: user.date_of_birth,
+        address: user.address || "",
+        phoneNumber: user.phone_number,
+        preferCategoryNames: preferFoods
 
     }
 }
