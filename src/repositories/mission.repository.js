@@ -17,7 +17,7 @@ export const addMission = async (data) => {
 
         return mission.insertId
     } catch (err) {
-        throw new Error(`에러가 발생했어요. 요청파라미터를 확인해주세요 (${err})`)
+        throw new Error(`에러가 발생했어요gh. 요청파라미터를 확인해주세요 (${err})`)
     } finally {
         conn.release()
     }

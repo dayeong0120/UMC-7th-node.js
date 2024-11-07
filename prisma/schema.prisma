@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          BigInt   @id @default(autoincrement())
+  email       String   @unique(map: "email") @db.VarChar(40)
+  name        String   @db.VarChar(30)
+  nickname    String   @db.VarChar(20)
+  gender      Boolean
+  birth       DateTime @map("date_of_birth") @db.Date
+  address     String   @db.VarChar(100)
+  phoneNumber Int      @unique @map("phone_number")
+
+  userPrefer UserPrefer[]
+
+  @@map("user") //테이블이름 매핑 
+}
+
+model Category {
+  id   BigInt @id @default(autoincrement())
+  name String @db.VarChar(40)
+
+  userPrefer UserPrefer[]
+
+  @@map("category")
+}
+
+model UserPrefer {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     BigInt   @map("user_id")
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId BigInt   @map("category_id")
+
+  @@index([categoryId], map: "category_id")
+  @@index([userId], map: "user_id")
+  @@map("user_prefer")
+}
