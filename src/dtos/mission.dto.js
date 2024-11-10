@@ -28,3 +28,30 @@ export const responseFromMission = (data) => {
 
     }
 }
+
+
+export const responseFromMissions = (missions) => {
+
+
+    const formattedMissions = missions.map(mission => (
+
+        {
+            id: mission.id,
+            awardedPoints: mission.awardedPoints || 0,
+            minimumAmount: mission.minimumAmount || 0,
+            certificationNumber: mission.certificationNumber,
+            missionPeriod: mission.missionPeriod ? new Date(new Date(mission.missionPeriod).setUTCHours(0, 0, 0, 0)).toISOString().split('T')[0] : null
+
+
+
+        }))
+
+    console.log("뭐가 문제지 : ", formattedMissions)
+
+    return {
+        data: formattedMissions,
+        pagination: {
+            cursor: missions.length ? missions[missions.length - 1].id : null
+        }
+    }
+}

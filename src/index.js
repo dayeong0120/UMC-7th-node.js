@@ -6,6 +6,8 @@ import { handleAddReview } from "./controllers/review.controller.js"
 import { handleAddProgressMission } from "./controllers/userMission.controller.js"
 import { handleAddMission } from "./controllers/mission.controller.js"
 import { handleListRestaurantReviews } from "./controllers/restaurant.controller.js"
+import { handleListUserReviews } from "./controllers/user.controller.js"
+import { handleRestaurantMissions } from "./controllers/restaurant.controller.js"
 
 
 dotenv.config()
@@ -31,6 +33,10 @@ app.post('/users/:userId/missions', handleAddProgressMission)
 app.post("/restaurants/:restaurantId/missions", handleAddMission)
 
 app.get("/restaurants/:restaurantId/reviews", handleListRestaurantReviews)
+
+app.get("/users/:userId/reviews", handleListUserReviews)
+
+app.get("/restaurants/:restaurantId/missions", handleRestaurantMissions)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
