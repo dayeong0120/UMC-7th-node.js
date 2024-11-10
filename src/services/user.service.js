@@ -1,9 +1,11 @@
 import { responseFromUser } from "../dtos/user.dto.js"
+import { responseFromReviews } from "../dtos/review.dto.js"
 import {
     addUser,
     getUser,
     getUserPreferencesByUserId,
     setPreference,
+    getAllUserReviews
 } from "../repositories/user.repository.js"
 
 export const userSignUp = async (data) => { //이 data가 bodyToUser
@@ -33,4 +35,10 @@ export const userSignUp = async (data) => { //이 data가 bodyToUser
     return responseFromUser({ user, preferences })
     //DTO로 다시 데이터 변환해서 응답에 포함시켜 보냄(controller 참고)
 
+}
+
+export const listUserReviews = async (userId, cursor) => {
+    const reviews = await getAllUserReviews(userId, cursor)
+
+    return responseFromReviews(reviews)
 }

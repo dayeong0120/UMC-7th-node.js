@@ -59,3 +59,28 @@ export const getUserPreferencesByUserId = async (userId) => {
     return preferences
 
 }
+
+//유저의 리뷰 목록 조회 
+export const getAllUserReviews = async (userId, cursor) => {
+    const reviews = await prisma.review.findMany({
+        select: {
+            id: true,
+            contents: true,
+            rating: true,
+            userMission: {
+                select: {
+                    userId: true
+                }
+            }
+        },
+        where: {
+            userMission: {
+                userId: parseInt(userId),
+                id: { gt: cursor }//gt: greater than
+            }
+        },
+        orderBy: { id: "asc" },
+        take: 5
+    })
+    return reviews
+}

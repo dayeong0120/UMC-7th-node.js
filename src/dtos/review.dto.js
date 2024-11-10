@@ -25,7 +25,8 @@ export const responseFromReviews = (reviews) => {
         id: review.id,
         contents: review.contents,
         rating: review.rating,
-        restaurantId: review.mission.restaurant.id,
+        restaurantId: review.mission?.restaurant?.id || null,
+        userId: review.userMission?.userId || null
     }))
 
     return {
