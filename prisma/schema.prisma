@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id          BigInt   @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   email       String   @unique(map: "email") @db.VarChar(40)
   name        String   @db.VarChar(30)
   nickname    String   @db.VarChar(20)
@@ -23,16 +23,18 @@ model User {
   address     String   @db.VarChar(100)
   phoneNumber Int      @unique @map("phone_number")
 
-  userPrefer UserPrefer[]
+  userPrefer  UserPrefer[]
+  UserMission UserMission[]
 
   @@map("user") //테이블이름 매핑 
 }
 
 model Category {
-  id   BigInt @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @db.VarChar(40)
 
   userPrefer UserPrefer[]
+  restaurant Restaurant[]
 
   @@map("category")
 }
@@ -40,11 +42,58 @@ model Category {
 model UserPrefer {
   id         Int      @id @default(autoincrement())
   user       User     @relation(fields: [userId], references: [id])
-  userId     BigInt   @map("user_id")
+  userId     Int      @map("user_id")
   category   Category @relation(fields: [categoryId], references: [id])
-  categoryId BigInt   @map("category_id")
+  categoryId Int      @map("category_id")
 
   @@index([categoryId], map: "category_id")
   @@index([userId], map: "user_id")
   @@map("user_prefer")
+}
+
+model Restaurant {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(40)
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int      @map("category_id")
+
+  mission Mission[]
+
+  @@map("restaurant")
+}
+
+model Mission {
+  id                  Int        @id @default(autoincrement())
+  restaurant          Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId        Int        @map("restaurant_id")
+  awardedPoints       Int        @map("awarded_points")
+  minimumAmount       Int        @map("minimum_amount")
+  missionPeriod       DateTime   @map("mission_period") @db.Date
+  certificationNumber Int        @map("certification_number")
+
+  UserMission UserMission[]
+
+  @@map("mission")
+}
+
+model UserMission {
+  id        Int     @id @default(autoincrement())
+  userId    Int     @map("user_id")
+  user      User    @relation(fields: [userId], references: [id])
+  missionId Int     @map("mission_id")
+  mission   Mission @relation(fields: [missionId], references: [id])
+
+  review Review?
+
+  @@map("user_mission")
+}
+
+model Review {
+  id            Int         @id @default(autoincrement())
+  userMissionId Int         @unique @map("user_mission_id")
+  userMission   UserMission @relation(fields: [userMissionId], references: [id])
+  rating        Float
+  contents      String      @db.VarChar(1000)
+
+  @@map("review")
 }

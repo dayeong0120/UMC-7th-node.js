@@ -1,7 +1,10 @@
 
 export const bodyToProgress = (body, userId) => {
+    const numUserId = Number(userId)
+
     return {
-        userId: userId,
+
+        userId: numUserId,
         missionId: body.missionId
     }
 }

@@ -21,6 +21,9 @@ export const missionAdd = async (data) => {
 
     const mission = await getMission(missionId)
 
-    return responseFromMission(mission)
+    const resValue = responseFromMission(mission)
+
+    console.log('DTO 반환후 최종반환값 : ', resValue)
+    return resValue
 
 }
