@@ -9,7 +9,17 @@ export const addUser = async (data) => {
         return null
     }
 
-    const created = await prisma.user.create({ data: data })
+    const created = await prisma.user.create({
+        data: {
+            email: data.email,
+            name: data.name,
+            nickname: data.nickname,
+            gender: data.gender,
+            birth: data.gender,
+            address: data.address,
+            phoneNumber: data.phoneNumber
+        }
+    })
     return created.id;
 
 }
