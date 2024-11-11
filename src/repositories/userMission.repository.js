@@ -87,3 +87,45 @@ export const getUserMission = async (userMissionId) => {
     // }
 
 }
+
+
+//유저의 미션 목록 조회하기 
+export const getAllUserMissions = async (userId, cursor, missionStatus) => {
+    if (missionStatus === 'progress') {
+        console.log('진행중인 미션 목록 조회를 요청했습니다')
+    }
+    else if (missionStatus === 'completed') {
+        console.log('진행완료된 미션 목록 조회를 요청했습니다')
+    }
+    else {
+        return null
+    }
+
+    const missions = await prisma.mission.findMany({
+        select: {
+            id: true,
+            awardedPoints: true,
+            minimumAmount: true,
+            certificationNumber: true,
+            missionPeriod: true,
+            userMission: {
+                select: {
+                    id: true,
+                    status: true
+                }
+            }
+        },
+        where: {
+            userMission: {
+                userId: userId,
+                status: missionStatus
+            },
+            userMission: { some: { id: { gt: cursor } } }
+        },
+        orderBy: { id: "asc" }, //유저미션의 아이디로 정렬할 수 없대 왜 
+        take: 5
+    })
+
+    return missions
+
+}

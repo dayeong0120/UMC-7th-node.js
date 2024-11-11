@@ -71,7 +71,7 @@ model Mission {
   missionPeriod       DateTime   @map("mission_period") @db.Date
   certificationNumber Int        @map("certification_number")
 
-  UserMission UserMission[]
+  userMission UserMission[]
 
   @@map("mission")
 }
@@ -82,6 +82,7 @@ model UserMission {
   user      User    @relation(fields: [userId], references: [id])
   missionId Int     @map("mission_id")
   mission   Mission @relation(fields: [missionId], references: [id])
+  status    String  @db.VarChar(20)
 
   review Review?
 
