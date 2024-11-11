@@ -1,7 +1,11 @@
+import {
+    responseFromMissions
+} from "../dtos/mission.dto.js"
 import { responseFromProgress } from "../dtos/userMission.dto.js"
 import {
     addUserMission,
-    getUserMission
+    getUserMission,
+    getAllUserMissions
 } from "../repositories/userMission.repository.js"
 
 export const addProgressMission = async (data) => {
@@ -23,4 +27,14 @@ export const addProgressMission = async (data) => {
 
 
 
+}
+
+export const listUserMissions = async (userId, cursor, missionStatus) => {
+    const userMissions = await getAllUserMissions(userId, cursor, missionStatus)
+
+    if (userMissions === null) {
+        throw new Error('쿼리스트링을 다시 확인해주세요')
+    }
+
+    return responseFromMissions(userMissions)
 }

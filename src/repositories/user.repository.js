@@ -9,7 +9,17 @@ export const addUser = async (data) => {
         return null
     }
 
-    const created = await prisma.user.create({ data: data })
+    const created = await prisma.user.create({
+        data: {
+            email: data.email,
+            name: data.name,
+            nickname: data.nickname,
+            gender: data.gender,
+            birth: data.gender,
+            address: data.address,
+            phoneNumber: data.phoneNumber
+        }
+    })
     return created.id;
 
 }
@@ -48,4 +58,29 @@ export const getUserPreferencesByUserId = async (userId) => {
     })
     return preferences
 
+}
+
+//유저의 리뷰 목록 조회 
+export const getAllUserReviews = async (userId, cursor) => {
+    const reviews = await prisma.review.findMany({
+        select: {
+            id: true,
+            contents: true,
+            rating: true,
+            userMission: {
+                select: {
+                    userId: true
+                }
+            }
+        },
+        where: {
+            userMission: {
+                userId: parseInt(userId),
+                id: { gt: cursor }//gt: greater than
+            }
+        },
+        orderBy: { id: "asc" },
+        take: 5
+    })
+    return reviews
 }

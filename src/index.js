@@ -5,6 +5,10 @@ import { handleUserSignUp } from "./controllers/user.controller.js"
 import { handleAddReview } from "./controllers/review.controller.js"
 import { handleAddProgressMission } from "./controllers/userMission.controller.js"
 import { handleAddMission } from "./controllers/mission.controller.js"
+import { handleListRestaurantReviews } from "./controllers/restaurant.controller.js"
+import { handleListUserReviews } from "./controllers/user.controller.js"
+import { handleRestaurantMissions } from "./controllers/restaurant.controller.js"
+import { handleListUserMissions } from "./controllers/userMission.controller.js"
 
 
 dotenv.config()
@@ -42,11 +46,19 @@ app.get('/', (req, res) => {
 
 app.post("/users", handleUserSignUp)
 
-app.post('/mission/:missionId/reviews', handleAddReview)
+app.post('/missions/:missionId/reviews', handleAddReview)
 
 app.post('/users/:userId/missions', handleAddProgressMission)
 
 app.post("/restaurants/:restaurantId/missions", handleAddMission)
+
+app.get("/restaurants/:restaurantId/reviews", handleListRestaurantReviews)
+
+app.get("/users/:userId/reviews", handleListUserReviews)
+
+app.get("/restaurants/:restaurantId/missions", handleRestaurantMissions)
+
+app.get("/users/:userId/missions", handleListUserMissions)
 
 //전역 오류를 처리하기 위한 미들웨어
 //컨트롤러에서 별도로 처리하지 않은 오류가 발생했을때 공통된 오류 응답 내려줌
