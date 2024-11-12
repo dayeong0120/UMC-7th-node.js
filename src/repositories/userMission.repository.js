@@ -19,7 +19,8 @@ export const addUserMission = async (data) => {
     const userMission = await prisma.userMission.create({
         data: {
             userId: data.userId,
-            missionId: data.missionId
+            missionId: data.missionId,
+            status: 'progress'
         }
     })
 

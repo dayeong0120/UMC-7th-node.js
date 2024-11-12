@@ -5,13 +5,17 @@ import { listUserMissions } from "../services/userMission.service.js";
 
 export const handleAddProgressMission = async (req, res, next) => {
 
-    const userId = req.params.userId
+    try {
+        const userId = req.params.userId
 
-    console.log('진행중인 미션 추가를 요청했습니다')
+        console.log('진행중인 미션 추가를 요청했습니다')
 
-    const progressMisson = await addProgressMission(bodyToProgress(req.body, userId))
+        const progressMisson = await addProgressMission(bodyToProgress(req.body, userId))
 
-    res.status(StatusCodes.OK).json({ result: progressMisson })
+        res.status(StatusCodes.OK).success(progressMisson)
+    } catch (error) {
+        next(error)
+    }
 
 }
 
@@ -26,5 +30,5 @@ export const handleListUserMissions = async (req, res, next) => {
 
     const userMissions = await listUserMissions(userId, cursor, missionStatus)
 
-    res.status(StatusCodes.OK).json({ result: userMissions })
+    res.status(StatusCodes.OK).success(userMissions)
 }

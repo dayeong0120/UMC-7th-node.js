@@ -12,7 +12,7 @@ export const handleListRestaurantReviews = async (req, res, next) => {
 
     const reviews = await listRestaurantReviews(restaurantId, cursor)
 
-    res.status(StatusCodes.OK).json({ result: reviews })
+    res.status(StatusCodes.OK).success(reviews)
 }
 
 export const handleRestaurantMissions = async (req, res, next) => {
@@ -23,5 +23,5 @@ export const handleRestaurantMissions = async (req, res, next) => {
     const missions = await listRestaurantMissions(restaurantId, cursor)
 
     console.log('나니')
-    res.status(StatusCodes.OK).json({ result: missions })
+    res.status(StatusCodes.OK).success(missions)
 }

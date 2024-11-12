@@ -7,6 +7,7 @@ import {
     setPreference,
     getAllUserReviews
 } from "../repositories/user.repository.js"
+import { DuplicateUserEmailError, DuplicateUserNumberError } from "../error.js"
 
 export const userSignUp = async (data) => { //이 data가 bodyToUser
     const joinUserId = await addUser({ //user정보를 추가하는 repository의 로직 
@@ -19,8 +20,12 @@ export const userSignUp = async (data) => { //이 data가 bodyToUser
         nickname: data.nickname,
     })
 
-    if (joinUserId === null) {
-        throw new Error("이미 존재하는 이메일입니다")
+    if (joinUserId === 'DuplicateEmail') {
+        throw new DuplicateUserEmailError("이미 존재하는 이메일입니다", data)
+    }
+
+    if (joinUserId === 'DuplicateNumber') {
+        throw new DuplicateUserNumberError("이미 존재하는 전화번호입니다", data)
     }
 
     for (const preference of data.preferences) {

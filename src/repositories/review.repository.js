@@ -5,22 +5,42 @@ export const addReview = async (data) => {
 
     const userMissionId = Number(data.userMissionId)
 
-    const isExistRestaurant = await prisma.restaurant.findFirst({
-        where: {
+    //userMissionId로 해당 미션의 가게 id 가져오기 
+    const restaurantId = await prisma.userMission.findFirst({
+        select: {
             mission: {
-                some: {  // 특정 조건을 만족하는 mission 항목이 하나 이상 존재해야 함
-                    UserMission: {
-                        some: {
-                            id: userMissionId
-                        }
-                    }
+                select: {
+                    restaurantId: true
+
                 }
             }
+        },
+        where: {
+            id: userMissionId
+        }
+    })
+
+    console.log('restaurantId : ', restaurantId)
+
+    //가게 id로 해당 가게 존재하는 지 확인 
+    const isExistRestaurant = await prisma.restaurant.findFirst({
+        where: {
+            id: restaurantId.mission.restaurantId
         }
     })
 
     if (isExistRestaurant === null) {
-        return null
+        return "NoExistRestaurant"
+    }
+
+    const checkUserMissionId = await prisma.review.findFirst({
+        where: {
+            userMissionId: userMissionId
+        }
+    })
+
+    if (checkUserMissionId) {
+        return "duplicateReview"
     }
 
     const created = await prisma.review.create({

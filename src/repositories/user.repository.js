@@ -1,3 +1,4 @@
+import { check } from "prisma"
 import { pool, prisma } from "../db.config.js"
 
 //User 데이터 추가 
@@ -6,7 +7,12 @@ export const addUser = async (data) => {
     const user = await prisma.user.findFirst({ where: { email: data.email } })
 
     if (user) {
-        return null
+        return "DuplicateEmail"
+    }
+
+    const checkNumber = await prisma.user.findFirst({ where: { phoneNumber: data.phoneNumber } })
+    if (checkNumber) {
+        return "DuplicateNumber"
     }
 
     const created = await prisma.user.create({
@@ -15,7 +21,7 @@ export const addUser = async (data) => {
             name: data.name,
             nickname: data.nickname,
             gender: data.gender,
-            birth: data.gender,
+            birth: data.birth,
             address: data.address,
             phoneNumber: data.phoneNumber
         }

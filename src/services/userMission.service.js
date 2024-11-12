@@ -2,6 +2,7 @@ import {
     responseFromMissions
 } from "../dtos/mission.dto.js"
 import { responseFromProgress } from "../dtos/userMission.dto.js"
+import { AlreadyProgressMissionError } from "../error.js"
 import {
     addUserMission,
     getUserMission,
@@ -18,7 +19,7 @@ export const addProgressMission = async (data) => {
     })
 
     if (userMissionId === null) {
-        throw new Error('진행중인 미션을 추가하는 데 문제가 발생했어요')
+        throw new AlreadyProgressMissionError('이미 진행중인 미션입니다', data)
     }
 
     const userMission = await getUserMission(userMissionId)

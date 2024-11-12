@@ -48,3 +48,14 @@ export const getAllRestaurantMissions = async (restaurantId, cursor) => {
 
     return missions
 }
+
+// 해당 id를 가진 가게 존재하는지 확인 
+export const isExist = async (tableName, id) => {
+    const isExist = prisma.tableName.findFirst({
+        where: { id: id }
+    })
+
+    if (isExist === null) {
+        throw new InvalidIdError()
+    }
+}

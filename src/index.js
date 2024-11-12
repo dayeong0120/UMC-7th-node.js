@@ -63,6 +63,7 @@ app.get("/users/:userId/missions", handleListUserMissions)
 //전역 오류를 처리하기 위한 미들웨어
 //컨트롤러에서 별도로 처리하지 않은 오류가 발생했을때 공통된 오류 응답 내려줌
 app.use((err, req, res, next) => {
+    console.log('전역 오류 처리 미들웨어')
     if (res.headersSent) {
         return next(err)
     }

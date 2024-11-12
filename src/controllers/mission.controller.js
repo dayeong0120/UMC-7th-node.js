@@ -13,5 +13,5 @@ export const handleAddMission = async (req, res, next) => {
     const mission = await missionAdd(bodyToMission(req.body, restaurantId))
 
 
-    res.status(StatusCodes.OK).json({ result: mission })
+    res.status(StatusCodes.OK).success(mission)
 }

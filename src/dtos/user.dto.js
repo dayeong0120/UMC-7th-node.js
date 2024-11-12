@@ -25,9 +25,9 @@ export const responseFromUser = ({ user, preferences }) => {
         name: user.name,
         nickname: user.nickname,
         gender: user.gender,
-        dateOfBirth: user.date_of_birth,
+        dateOfBirth: user.birth,
         address: user.address || "",
-        phoneNumber: user.phone_number,
+        phoneNumber: user.phoneNumber,
         preferCategoryNames: preferFoods
 
     }
