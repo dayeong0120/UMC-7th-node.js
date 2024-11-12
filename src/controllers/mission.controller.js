@@ -8,6 +8,8 @@ export const handleAddMission = async (req, res, next) => {
 
     const restaurantId = req.params.restaurantId
 
+
+
     console.log('가게에 미션 추가를 요청했습니다')
 
     const mission = await missionAdd(bodyToMission(req.body, restaurantId))
