@@ -1,4 +1,5 @@
 import { responseFromReview } from "../dtos/review.dto.js"
+import { DuplicateReviewError, NoExistRestaurantError } from "../error.js"
 import {
     addReview,
     getReview
@@ -16,8 +17,12 @@ export const reviewAdd = async (data) => {
 
     console.log('addReview의 결과 확인 : ', addReviewId)
 
-    if (addReviewId === null) {
-        throw new Error("존재하지 않는 식당입니다")
+    if (addReviewId === 'NoExistRestaurant') {
+        throw new NoExistRestaurantError("존재하지 않는 식당입니다", data)
+    }
+
+    if (addReviewId === 'duplicateReview') {
+        throw new DuplicateReviewError("이미 해당 미션에 대한 리뷰를 작성했습니다", data)
     }
 
     const review = await getReview(addReviewId)

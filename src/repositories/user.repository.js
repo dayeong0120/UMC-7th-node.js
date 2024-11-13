@@ -1,3 +1,4 @@
+import { check } from "prisma"
 import { pool, prisma } from "../db.config.js"
 
 //User 데이터 추가 
@@ -6,10 +7,25 @@ export const addUser = async (data) => {
     const user = await prisma.user.findFirst({ where: { email: data.email } })
 
     if (user) {
-        return null
+        return "DuplicateEmail"
     }
 
-    const created = await prisma.user.create({ data: data })
+    const checkNumber = await prisma.user.findFirst({ where: { phoneNumber: data.phoneNumber } })
+    if (checkNumber) {
+        return "DuplicateNumber"
+    }
+
+    const created = await prisma.user.create({
+        data: {
+            email: data.email,
+            name: data.name,
+            nickname: data.nickname,
+            gender: data.gender,
+            birth: data.birth,
+            address: data.address,
+            phoneNumber: data.phoneNumber
+        }
+    })
     return created.id;
 
 }
@@ -48,4 +64,29 @@ export const getUserPreferencesByUserId = async (userId) => {
     })
     return preferences
 
+}
+
+//유저의 리뷰 목록 조회 
+export const getAllUserReviews = async (userId, cursor) => {
+    const reviews = await prisma.review.findMany({
+        select: {
+            id: true,
+            contents: true,
+            rating: true,
+            userMission: {
+                select: {
+                    userId: true
+                }
+            }
+        },
+        where: {
+            userMission: {
+                userId: parseInt(userId),
+                id: { gt: cursor }//gt: greater than
+            }
+        },
+        orderBy: { id: "asc" },
+        take: 5
+    })
+    return reviews
 }
