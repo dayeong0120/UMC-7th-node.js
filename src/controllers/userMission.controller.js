@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { bodyToProgress } from "../dtos/userMission.dto.js"
 import { addProgressMission } from "../services/userMission.service.js"
 import { listUserMissions } from "../services/userMission.service.js";
+import { isExist } from "../error.js";
 
 export const handleAddProgressMission = async (req, res, next) => {
 
@@ -21,14 +22,20 @@ export const handleAddProgressMission = async (req, res, next) => {
 
 export const handleListUserMissions = async (req, res, next) => {
     console.log('유저의 미션 목록 조회를 요청했습니다.')
+    try {
 
-    const userId = req.params.userId
+        const userId = req.params.userId
 
-    const cursor = typeof req.query.cursor === 'string' ? parseInt(req.query.cursor) : 0
+        await isExist("user", userId)
 
-    const missionStatus = typeof req.query.status === 'string' ? req.query.status : null
+        const cursor = typeof req.query.cursor === 'string' ? parseInt(req.query.cursor) : 0
 
-    const userMissions = await listUserMissions(userId, cursor, missionStatus)
+        const missionStatus = typeof req.query.status === 'string' ? req.query.status : null
 
-    res.status(StatusCodes.OK).success(userMissions)
+        const userMissions = await listUserMissions(userId, cursor, missionStatus)
+
+        res.status(StatusCodes.OK).success(userMissions)
+    } catch (error) {
+        next(error)
+    }
 }
