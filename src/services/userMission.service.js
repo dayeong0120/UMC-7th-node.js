@@ -24,6 +24,8 @@ export const addProgressMission = async (data) => {
 
     const userMission = await getUserMission(userMissionId)
 
+    console.log('레퍼지토리 작업 수행 후 반환 데이터 : ', userMission)
+
     return responseFromProgress(userMission) //await해야하나
 
 

@@ -1,11 +1,12 @@
 import { check } from "prisma"
-import { pool, prisma } from "../db.config.js"
+import { prisma } from "../db.config.js"
 
 //User 데이터 추가 
 export const addUser = async (data) => {
 
     const user = await prisma.user.findFirst({ where: { email: data.email } })
 
+    console.log('중복이메일 확인  : ', user)
     if (user) {
         return "DuplicateEmail"
     }

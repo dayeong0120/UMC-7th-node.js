@@ -15,7 +15,7 @@ model User {
   gender      Boolean
   birth       DateTime      @map("date_of_birth") @db.Date
   address     String        @db.VarChar(100)
-  phoneNumber Int           @unique @map("phone_number")
+  phoneNumber String        @unique @map("phone_number") @db.VarChar(30)
   UserPrefer  UserPrefer[]
   UserMission UserMission[]
 

@@ -2,9 +2,10 @@
 //회원가입 시 이메일 중복
 export class DuplicateUserEmailError extends Error {
     errorCode = "U001"
-    reason = "이미 존재하는 이메일입니다"
+
 
     constructor(data) {
+        const reason = "이미 존재하는 이메일입니다"
         super(reason) //부모클래스의 생성자르 ㄹ호출 
         this.reason = reason
         this.data = data
@@ -59,9 +60,10 @@ export class AlreadyProgressMissionError extends Error {
 //path variable로 받은 id가 유효하지 않을 때 
 export class InvalidIdError extends Error {
     errorCode = "P001"
-    reason = "path variable로 받은 id값이 유효하지 않습니다"
+
 
     constructor() {
+        const reason = "path variable로 받은 id값이 유효하지 않습니다"
         super(reason)
         this.reason = reason
     }

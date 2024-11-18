@@ -10,6 +10,7 @@ import {
 import { DuplicateUserEmailError, DuplicateUserNumberError } from "../error.js"
 
 export const userSignUp = async (data) => { //이 data가 bodyToUser
+    console.log('user.service.js : ', data)
     const joinUserId = await addUser({ //user정보를 추가하는 repository의 로직 
         email: data.email,
         name: data.name,
@@ -20,6 +21,7 @@ export const userSignUp = async (data) => { //이 data가 bodyToUser
         nickname: data.nickname,
     })
 
+    console.log('repository 작업 결과 : ', joinUserId)
     if (joinUserId === 'DuplicateEmail') {
         throw new DuplicateUserEmailError(data)
     }

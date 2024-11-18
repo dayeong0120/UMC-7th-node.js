@@ -1,4 +1,4 @@
-import { pool, prisma } from "../db.config.js"
+import { prisma } from "../db.config.js"
 
 //리뷰 추가하기 
 export const addReview = async (data) => {

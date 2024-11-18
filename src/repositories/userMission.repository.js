@@ -1,4 +1,4 @@
-import { pool, prisma } from "../db.config.js"
+import { prisma } from "../db.config.js"
 
 
 //진행중인 미션 추가하기 
@@ -109,7 +109,7 @@ export const getAllUserMissions = async (userId, cursor, missionStatus) => {
             minimumAmount: true,
             certificationNumber: true,
             missionPeriod: true,
-            userMission: {
+            UserMission: {
                 select: {
                     id: true,
                     status: true
@@ -117,11 +117,11 @@ export const getAllUserMissions = async (userId, cursor, missionStatus) => {
             }
         },
         where: {
-            userMission: {
+            UserMission: {
                 userId: userId,
                 status: missionStatus
             },
-            userMission: { some: { id: { gt: cursor } } }
+            UserMission: { some: { id: { gt: cursor } } }
         },
         orderBy: { id: "asc" }, //유저미션의 아이디로 정렬할 수 없대 왜 
         take: 5

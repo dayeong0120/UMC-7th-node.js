@@ -11,7 +11,8 @@ export const bodyToProgress = (body, userId) => {
 
 export const responseFromProgress = (userMission) => {
     return {
-        userId: userMission.user_id,
-        missionId: userMission.mission_id
+        id: userMission.id,
+        userId: userMission.userId,
+        missionId: userMission.missionId
     }
 }
