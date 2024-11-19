@@ -73,17 +73,3 @@ export const handleAddProgressMission = async (req, res, next) => {
     }
 
 }
-
-export const handleListUserMissions = async (req, res, next) => {
-    console.log('유저의 미션 목록 조회를 요청했습니다.')
-
-    const userId = req.params.userId
-
-    const cursor = typeof req.query.cursor === 'string' ? parseInt(req.query.cursor) : 0
-
-    const missionStatus = typeof req.query.status === 'string' ? req.query.status : null
-
-    const userMissions = await listUserMissions(userId, cursor, missionStatus)
-
-    res.status(StatusCodes.OK).success(userMissions)
-}
