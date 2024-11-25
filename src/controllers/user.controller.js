@@ -3,6 +3,7 @@ import { bodyToUser } from "../dtos/user.dto.js";
 import { userSignUp } from "../services/user.service.js";
 import { listUserReviews } from "../services/user.service.js";
 import { listUserMissions } from "../services/userMission.service.js";
+import { isExist } from "../error.js";
 
 export const handleUserSignUp = async (req, res, next) => {
     /*
@@ -138,6 +139,7 @@ export const handleListUserReviews = async (req, res, next) => {
 }
 
 
+
 export const handleListUserMissions = async (req, res, next) => {
 
     /*
@@ -186,3 +188,4 @@ export const handleListUserMissions = async (req, res, next) => {
 
     res.status(StatusCodes.OK).success(userMissions)
 }
+

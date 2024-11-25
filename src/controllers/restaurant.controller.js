@@ -3,8 +3,10 @@ import {
     listRestaurantReviews,
     listRestaurantMissions
 } from "../services/restaurant.service.js";
+import { isExist } from "../error.js";
 
 export const handleListRestaurantReviews = async (req, res, next) => {
+
     /* 
     #swagger.summary = '가게 리뷰 목록 조회 API'
     #swagger.responses[200] = {
@@ -45,14 +47,20 @@ export const handleListRestaurantReviews = async (req, res, next) => {
         }
     }
     */
-    const restaurantId = req.params.restaurantId
+  try {
+        const restaurantId = req.params.restaurantId
+
+        await isExist("restaurant", restaurantId)
 
 
-    const cursor = typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
+        const cursor = typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
 
-    const reviews = await listRestaurantReviews(restaurantId, cursor)
+        const reviews = await listRestaurantReviews(restaurantId, cursor)
 
-    res.status(StatusCodes.OK).success(reviews)
+        res.status(StatusCodes.OK).success(reviews)
+    } catch (error) {
+        next(error)
+    }
 }
 
 export const handleRestaurantMissions = async (req, res, next) => {
@@ -90,12 +98,18 @@ export const handleRestaurantMissions = async (req, res, next) => {
                 }
             }
         } */
-    const restaurantId = req.params.restaurantId
 
-    const cursor = typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
+  try {
+        const restaurantId = req.params.restaurantId
 
-    const missions = await listRestaurantMissions(restaurantId, cursor)
+        await isExist("restaurant", restaurantId) //isExist가 throw하는걸 안기다려서 catch되지 않았던 것 ! 
 
-    console.log('나니')
-    res.status(StatusCodes.OK).success(missions)
+        const cursor = typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
+
+        const missions = await listRestaurantMissions(restaurantId, cursor)
+
+        res.status(StatusCodes.OK).success(missions)
+    } catch (error) {
+        next(error)
+    }
 }

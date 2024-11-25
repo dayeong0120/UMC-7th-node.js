@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { bodyToProgress } from "../dtos/userMission.dto.js"
 import { addProgressMission } from "../services/userMission.service.js"
 import { listUserMissions } from "../services/userMission.service.js";
+import { isExist } from "../error.js";
 
 export const handleAddProgressMission = async (req, res, next) => {
     /* 
@@ -75,3 +76,4 @@ export const handleAddProgressMission = async (req, res, next) => {
     }
 
 }
+
