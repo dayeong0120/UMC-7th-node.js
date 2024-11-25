@@ -189,3 +189,20 @@ export const handleListUserMissions = async (req, res, next) => {
     res.status(StatusCodes.OK).success(userMissions)
 }
 
+
+export const handleEditUser = async (req, res, next) => {
+    console.log(req)
+    console.log('유저의 회원 정보 수정을 요청했습니다.')
+    try {
+
+        const userId = req.user.id
+
+        const user = await userEdit(bodyToUser(req.body, userId))
+
+        res.status(StatusCodes.Ok).success(user)
+
+    } catch (error) {
+        next(error)
+    }
+}
+
