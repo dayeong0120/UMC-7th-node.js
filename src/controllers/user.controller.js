@@ -128,7 +128,7 @@ export const handleListUserReviews = async (req, res, next) => {
 
     console.log('내가 쓴 리뷰 목록 조회를 요청했습니다')
 
-    const userId = req.params.userId
+    const userId = req.user.id
 
     const cursor = typeof req.query.cursor === 'string' ? parseInt(req.query.cursor) : 0
 
@@ -176,7 +176,7 @@ export const handleListUserMissions = async (req, res, next) => {
     } */
     console.log('유저의 미션 목록 조회를 요청했습니다.')
 
-    const userId = req.params.userId
+    const userId = req.user.id
 
     const cursor = typeof req.query.cursor === 'string' ? parseInt(req.query.cursor) : 0
 
