@@ -1,4 +1,4 @@
-import { pool, prisma } from "../db.config.js"
+import { prisma } from "../db.config.js"
 //가게에 미션추가하기 
 export const addMission = async (data) => {
     //인증번호 값 랜덤으로 저장 

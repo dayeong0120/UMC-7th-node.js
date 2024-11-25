@@ -5,7 +5,9 @@ import { prisma } from "./db.config.js"
 export class DuplicateUserEmailError extends Error {
     errorCode = "U001"
 
-    constructor(reason, data) {
+
+    constructor(data) {
+        const reason = "이미 존재하는 이메일입니다"
         super(reason) //부모클래스의 생성자르 ㄹ호출 
         this.reason = reason
         this.data = data
@@ -25,7 +27,7 @@ export class DuplicateUserNumberError extends Error {
 
 //가게에 리뷰 추가 시 가게 정보 없음 
 export class NoExistRestaurantError extends Error {
-    errorCode = "R001"
+    errorCode = "RES001"
 
     constructor(reason, data) {
         super(reason)
@@ -36,7 +38,7 @@ export class NoExistRestaurantError extends Error {
 
 //가게에 리뷰 추가 시 이미 리뷰를 작성한 미션
 export class DuplicateReviewError extends Error {
-    errorCode = "R002"
+    errorCode = "REV002"
 
     constructor(reason, data) {
         super(reason)
