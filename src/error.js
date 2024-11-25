@@ -1,3 +1,5 @@
+import { prisma } from "./db.config.js"
+
 
 //회원가입 시 이메일 중복
 export class DuplicateUserEmailError extends Error {
@@ -57,7 +59,7 @@ export class AlreadyProgressMissionError extends Error {
     }
 }
 
-//path variable로 받은 id가 유효하지 않을 때 
+//path variable로 받은 id가 유효하지 않을 때  
 export class InvalidIdError extends Error {
     errorCode = "P001"
 
@@ -66,5 +68,22 @@ export class InvalidIdError extends Error {
         const reason = "path variable로 받은 id값이 유효하지 않습니다"
         super(reason)
         this.reason = reason
+
+    }
+}
+// 해당 id를 가진 데이터 존재하는지 확인 
+export const isExist = async (tableName, id) => {
+
+    const model = prisma[tableName]
+
+    const isExist = await model.findFirst({
+        where: { id: parseInt(id) }
+    })
+
+    if (isExist === null) {
+        throw new InvalidIdError()
+    }
+    else {
+        console.log('path variable값 문제 없습니다')
     }
 }

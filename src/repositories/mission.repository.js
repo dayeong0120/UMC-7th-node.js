@@ -70,11 +70,3 @@ export const getMission = async (missionId) => {
     //     conn.release()
     // }
 }
-
-export const isExistMission = async (missionId) => {
-    const isExist = prisma.mission.findFirst({
-        where: { id: missionId }
-    })
-
-    if (isExist === null) return false
-}
