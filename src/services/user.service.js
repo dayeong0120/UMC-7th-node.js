@@ -5,7 +5,8 @@ import {
     getUser,
     getUserPreferencesByUserId,
     setPreference,
-    getAllUserReviews
+    getAllUserReviews,
+    updateUser
 } from "../repositories/user.repository.js"
 import { DuplicateUserEmailError, DuplicateUserNumberError } from "../error.js"
 
@@ -48,4 +49,15 @@ export const listUserReviews = async (userId, cursor) => {
     const reviews = await getAllUserReviews(userId, cursor)
 
     return responseFromReviews(reviews)
+}
+
+
+export const userEdit = async (data, userId) => {
+    const user = await updateUser(data, userId)
+
+    // getuser의 반환값은 객체하나를 요소로 가진 배열
+    const preferences = await getUserPreferencesByUserId(user.id);
+    //추가됐는지 조회할 수 있는건가? (select)
+
+    return responseFromUser({ user, preferences })
 }

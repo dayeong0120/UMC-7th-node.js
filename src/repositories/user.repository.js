@@ -91,3 +91,16 @@ export const getAllUserReviews = async (userId, cursor) => {
     })
     return reviews
 }
+
+//User 데이터 수정 
+export const updateUser = async (data, userId) => {
+    const user = await prisma.user.update({
+        where: { id: userId },
+        data: data
+
+    })
+
+    console.log('update 후 값', user)
+
+    return user
+}
