@@ -59,9 +59,11 @@ export const handleAddProgressMission = async (req, res, next) => {
         }
     }
     */
+    console.log('req.user : ', req.user)
 
     try {
-        const userId = req.params.userId
+        const userId = req.user.id
+        // const userId = req.params.userId
 
         console.log('진행중인 미션 추가를 요청했습니다')
 

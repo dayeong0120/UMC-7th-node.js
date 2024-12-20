@@ -15,7 +15,7 @@ model User {
   gender      Boolean
   birth       DateTime      @map("date_of_birth") @db.Date
   address     String        @db.VarChar(100)
-  phoneNumber String        @unique @map("phone_number") @db.VarChar(30)
+  phoneNumber String        @map("phone_number") @db.VarChar(30)
   UserPrefer  UserPrefer[]
   UserMission UserMission[]
 
@@ -91,4 +91,13 @@ model Review {
   contents String @db.VarChar(1000)
 
   @@map("review")
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique //session id  : session 식별
+  data      String   @db.VarChar(2000)
+  expiresAt DateTime @map("expire_at")
+
+  @@map("session")
 }

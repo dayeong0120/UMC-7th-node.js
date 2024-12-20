@@ -4,6 +4,7 @@ import { userSignUp } from "../services/user.service.js";
 import { listUserReviews } from "../services/user.service.js";
 import { listUserMissions } from "../services/userMission.service.js";
 import { isExist } from "../error.js";
+import { userEdit } from "../services/user.service.js";
 
 export const handleUserSignUp = async (req, res, next) => {
     /*
@@ -128,8 +129,9 @@ export const handleListUserReviews = async (req, res, next) => {
         } */
 
     console.log('내가 쓴 리뷰 목록 조회를 요청했습니다')
+    console.log('req.user', req.user.id)
 
-    const userId = req.params.userId
+    const userId = req.user.id
 
     const cursor = typeof req.query.cursor === 'string' ? parseInt(req.query.cursor) : 0
 
@@ -178,7 +180,9 @@ export const handleListUserMissions = async (req, res, next) => {
     } */
     console.log('유저의 미션 목록 조회를 요청했습니다.')
 
-    const userId = req.params.userId
+    console.log('req.user', req.user.id)
+
+    const userId = req.user.id
 
     const cursor = typeof req.query.cursor === 'string' ? parseInt(req.query.cursor) : 0
 
@@ -187,5 +191,81 @@ export const handleListUserMissions = async (req, res, next) => {
     const userMissions = await listUserMissions(userId, cursor, status)
 
     res.status(StatusCodes.OK).success(userMissions)
+}
+
+
+export const handleEditUser = async (req, res, next) => {
+    /*
+    #swagger.summary = "사용자 정보 수정 API"
+    #swagger.requestBody ={
+        required : true,
+        content : {
+            "application/json" : {
+                schema : {
+                    type: "object",
+                    properties:{
+                        email : {type : "string",nullable:true},
+                        name : {type : "string",nullable:true},
+                        nickname : {type :"string",nullable:true},
+                        gender : {type : "number", example: 0,nullable:true},
+                        dateOfBirth : {type : "string", format : "date",nullable:true},
+                        address : {type : "string",nullable:true},
+                        phoneNumber : {type : "string",nullable:true},
+                        preferCategory : {tupe: "array", items:{type:"number"},nullable:true}
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[200] = {
+        description : "회원가입 성공 응답",
+        content : {
+            "application/json": {
+                schema : {
+                    type : "object",
+                    properties:{
+                        resultType : {type : "string", example:"SUCCESS"},
+                        error : {type:"object", nullable : true, example: null},
+                        success:{
+                            type : "object",
+                            properties : {
+                                email: {type : "string"},
+                                name : {type : "string"},
+                                nickname : {type : "string"},
+                                gender : {type : "boolean"},
+                                dateOfBirth : {type : "string", format:"date"},
+                                address : {type: "string"},
+                                phoneNumber : {type :"string"},
+                                preferCategoryNames : {type:"array",items : {type : "string"}}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    */
+    console.log('유저의 회원 정보 수정을 요청했습니다.')
+    console.log('cookie:', req.header)
+    try {
+        console.log('req.user', req.user)
+
+
+        if (!req.user || !req.user.id) {
+            throw new Error("사용자 인증 정보가 누락되었습니다.");
+        }
+
+        const userId = req.user.id
+
+        console.log('req.user.id : ', userId)
+        console.log('req.body : ', req.body)
+        const user = await userEdit(bodyToUser(req.body), userId)
+
+        res.status(StatusCodes.OK).success(user)
+
+    } catch (error) {
+        next(error)
+    }
 }
 
