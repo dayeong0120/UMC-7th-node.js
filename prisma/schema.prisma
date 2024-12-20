@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int           @id @default(autoincrement())
+  email       String        @unique(map: "email") @db.VarChar(40)
+  name        String        @db.VarChar(30)
+  nickname    String        @db.VarChar(20)
+  gender      Boolean
+  birth       DateTime      @map("date_of_birth") @db.Date
+  address     String        @db.VarChar(100)
+  phoneNumber String        @map("phone_number") @db.VarChar(30)
+  UserPrefer  UserPrefer[]
+  UserMission UserMission[]
+
+  @@map("user")
+}
+
+model Category {
+  id         Int          @id @default(autoincrement())
+  name       String       @db.VarChar(40)
+  UserPrefer UserPrefer[]
+  Restaurant Restaurant[]
+
+  @@map("category")
+}
+
+model UserPrefer {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @map("user_id")
+  user       User     @relation(fields: [userId], references: [id])
+  categoryId Int      @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@index([categoryId], map: "category_id")
+  @@index([userId], map: "user_id")
+  @@map("user_prefer")
+}
+
+model Restaurant {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(40)
+  categoryId Int       @map("category_id")
+  category   Category  @relation(fields: [categoryId], references: [id])
+  Mission    Mission[]
+
+  @@index([categoryId], map: "restaurant_category_id_fkey")
+  @@map("restaurant")
+}
+
+model Mission {
+  id                  Int           @id @default(autoincrement())
+  restaurantId        Int           @map("restaurant_id")
+  restaurant          Restaurant    @relation(fields: [restaurantId], references: [id])
+  awardedPoints       Int           @map("awarded_points")
+  minimumAmount       Int           @map("minimum_amount")
+  missionPeriod       DateTime      @map("mission_period") @db.Date
+  certificationNumber Int           @map("certification_number")
+  UserMission         UserMission[]
+
+  @@index([restaurantId], map: "mission_restaurant_id_fkey")
+  @@map("mission")
+}
+
+model UserMission {
+  id        Int     @id @default(autoincrement())
+  userId    Int     @map("user_id")
+  user      User    @relation(fields: [userId], references: [id])
+  missionId Int     @map("mission_id")
+  mission   Mission @relation(fields: [missionId], references: [id])
+  status    String  @db.VarChar(20)
+  Review    Review?
+
+  @@index([missionId], map: "user_mission_mission_id_fkey")
+  @@index([userId], map: "user_mission_user_id_fkey")
+  @@map("user_mission")
+}
+
+model Review {
+  id            Int         @id @default(autoincrement())
+  userMissionId Int         @unique @map("user_mission_id")
+  userMission   UserMission @relation(fields: [userMissionId], references: [id])
+
+  rating   Float
+  contents String @db.VarChar(1000)
+
+  @@map("review")
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique //session id  : session 식별
+  data      String   @db.VarChar(2000)
+  expiresAt DateTime @map("expire_at")
+
+  @@map("session")
+}
